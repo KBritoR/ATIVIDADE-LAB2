@@ -1,0 +1,45 @@
+from database import Database
+
+class Query:
+    def __init__(self):
+        self.db = Database()
+    
+    # Question 1 queries
+    def get_renzo_info(self):
+        query = "MATCH (t:Teacher {name: 'Renzo'}) RETURN t.ano_nasc, t.cpf"
+        return self.db.execute_query(query)
+    
+    def get_teachers_starting_with_m(self):
+        query = "MATCH (t:Teacher) WHERE t.name STARTS WITH 'M' RETURN t.name, t.cpf"
+        return self.db.execute_query(query)
+    
+    def get_all_cities(self):
+        query = "MATCH (c:City) RETURN c.name"
+        return self.db.execute_query(query)
+    
+    def get_schools_in_range(self):
+        query = "MATCH (s:School) WHERE s.number >= 150 AND s.number <= 550 RETURN s.name, s.address, s.number"
+        return self.db.execute_query(query)
+    
+    # Question 2 queries
+    def get_youngest_and_oldest_teacher_years(self):
+        query = """
+        MATCH (t:Teacher)
+        RETURN min(t.ano_nasc) as youngest, max(t.ano_nasc) as oldest
+        """
+        return self.db.execute_query(query)
+    
+    def get_average_population(self):
+        query = "MATCH (c:City) RETURN avg(c.population) as average_population"
+        return self.db.execute_query(query)
+    
+    def get_city_with_cep_and_replace_a(self):
+        query = """
+        MATCH (c:City {cep: '37540-000'})
+        RETURN replace(c.name, 'a', 'A') as modified_name
+        """
+        return self.db.execute_query(query)
+    
+    def get_third_character_of_teachers(self):
+        query = "MATCH (t:Teacher) RETURN substring(t.name, 2, 1) as third_character"
+        return self.db.execute_query(query)
